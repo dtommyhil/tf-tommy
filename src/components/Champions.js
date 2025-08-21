@@ -5,16 +5,31 @@ import { getTierColor } from '../utils/helpers';
 const Champions = ({ champions }) => {
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedTier, setSelectedTier] = useState('all');
+  const [sortBy, setSortBy] = useState('winRate');
+  const [sortOrder, setSortOrder] = useState('desc'); // desc = high to low, asc = low to high
 
-  // Filter champions based on search and tier selection
   const filteredChampions = useMemo(() => {
-    return champions.filter(champion => {
+    let filtered = champions.filter(champion => {
       const matchesSearch = champion.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
                           champion.traits.some(trait => trait.toLowerCase().includes(searchQuery.toLowerCase()));
       const matchesTier = selectedTier === 'all' || champion.tier === selectedTier;
       return matchesSearch && matchesTier;
     });
-  }, [champions, searchQuery, selectedTier]);
+
+    // Add sorting
+    filtered.sort((a, b) => {
+      let aValue = a[sortBy];
+      let bValue = b[sortBy];
+      
+      if (sortOrder === 'desc') {
+        return bValue - aValue; // High to low
+      } else {
+        return aValue - bValue; // Low to high
+      }
+    });
+
+    return filtered;
+  }, [champions, searchQuery, selectedTier, sortBy, sortOrder]);
 
   return (
     <div className="space-y-4">
@@ -41,6 +56,24 @@ const Champions = ({ champions }) => {
           <option value="B">B Tier</option>
           <option value="C">C Tier</option>
         </select>
+        
+        <select
+          value={sortBy}
+          onChange={(e) => setSortBy(e.target.value)}
+          className="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+        >
+          <option value="winRate">Sort by Win Rate</option>
+          <option value="playRate">Sort by Play Rate</option>
+          <option value="avgPlacement">Sort by Avg Placement</option>
+          <option value="cost">Sort by Cost</option>
+        </select>
+
+        <button
+          onClick={() => setSortOrder(sortOrder === 'desc' ? 'asc' : 'desc')}
+          className="px-4 py-2 border border-gray-300 rounded-lg hover:bg-gray-50 focus:ring-2 focus:ring-blue-500"
+        >
+          {sortOrder === 'desc' ? '↓ High to Low' : '↑ Low to High'}
+        </button>
       </div>
 
       {/* Champions List */}
