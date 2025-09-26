@@ -4,14 +4,10 @@ Teamfight Tactics companion app that tracks best comps, champion stats, and item
 
 Live Demo: https://tf-tommy.vercel.app
 
----
-
 ## Status
 
 This project is currently in active development.  
 Core features are being built, and the app is not yet production-ready.  
-
----
 
 ## Features
 
@@ -21,16 +17,12 @@ Core features are being built, and the app is not yet production-ready.
 - Preview repo files or README content directly in the app  
 - Built with a lightweight, client-side data fetcher (no backend required)  
 
----
-
 ## Tech Stack
 
 - Next.js (React with server/client rendering)  
 - GitHub API for repo data, file content, and languages  
 - Tailwind CSS for styling  
 - Vercel for deployment  
-
----
 
 ## Installation
 
